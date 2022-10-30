@@ -95,6 +95,7 @@ export const useQueriesStore = defineStore('queries', {
       console.log('> useQueriesStore -> appendCommandToSelected');
       return this._selectedGuard().then(() => {
         this.selected.commands.push(new QueryCommandVO(Date.now(), '', ''));
+        this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
       });
     },
     removeCommandFromSelected(command) {
@@ -102,6 +103,7 @@ export const useQueriesStore = defineStore('queries', {
       return this._selectedGuard().then(() => {
         const index = this.selected.commands.indexOf(command);
         this.selected.commands.splice(index, 1);
+        this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
       });
     },
     changeCommandKeyForSelected(command, key) {
