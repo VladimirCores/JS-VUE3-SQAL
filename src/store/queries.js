@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia';
+import minifaker from 'minifaker';
+import 'minifaker/locales/en';
+
 import { QueryCommandVO, QueryVO, ResultRowVO, ResultsVO } from '@/model/vos';
 import LocalStorageKeys from '@/constants/local';
 import {
@@ -7,7 +10,6 @@ import {
   utilFindSelectableByIdInListAndMarkIt,
 } from '@/utils/generalUtils.js';
 import { utilMathRandomRange } from '@/utils/mathUtils.js';
-import { faker } from '@faker-js/faker';
 
 export const useQueriesStore = defineStore('queries', {
   state: () => ({ list: [], selected: null, isLoadingResults: false, lastExecutedQuery: '' }),
@@ -32,13 +34,14 @@ export const useQueriesStore = defineStore('queries', {
           return Math.random() > 0.5 ? '' : 10;
         });
         return new ResultsVO(
-          columns.map(() => faker.lorem.word()),
+          columns.map(() => minifaker.word()),
           [...Array(utilMathRandomRange(20, 5))].map((v, index) => {
             return new ResultRowVO(
               index,
               columns.map((data) => {
-                if (typeof data === 'string') return faker.lorem.sentence(utilMathRandomRange(10, 1));
-                if (typeof data === 'number') return faker.datatype.number(10000000);
+                if (typeof data === 'string')
+                  return minifaker.array(utilMathRandomRange(10, 1), () => minifaker.word()).join(' ');
+                if (typeof data === 'number') return utilMathRandomRange(1000000, 10);
                 return null;
               }),
             );
@@ -61,59 +64,68 @@ export const useQueriesStore = defineStore('queries', {
     },
     updateSelectedName(value) {
       console.log('> useQueriesStore -> updateSelectedName:', { value });
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         this.selected.name = value;
-      }
+      });
     },
     updateSelectedCommand(text) {
       console.log('> useQueriesStore -> updateSelectedCommand:', { text });
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         this.selected.command = text;
         if (text?.length === 0) {
           this.selected.commands = [];
         }
-      }
+      });
     },
     updateSelectedResults(results) {
       console.log('> useQueriesStore -> updateSelectedData:', { results });
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         this.selected.results = results;
-      }
+      });
     },
     appendToSelectedCommand(text) {
       console.log('> useQueriesStore -> appendToSelectedCommand:', { text });
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         const param = `${text},`;
         this.updateSelectedCommand(this.selected.command + param);
         this.selected.commands[this.selected.commands.length - 1].params += param;
-      }
+      });
     },
     appendCommandToSelected() {
       console.log('> useQueriesStore -> appendCommandToSelected');
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         this.selected.commands.push(new QueryCommandVO(Date.now(), '', ''));
-      }
+      });
     },
     removeCommandFromSelected(command) {
       console.log('> useQueriesStore -> removeCommandFromSelected', command);
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         const index = this.selected.commands.indexOf(command);
         this.selected.commands.splice(index, 1);
-      }
+      });
     },
     changeCommandKeyForSelected(command, key) {
       console.log('> useQueriesStore -> changeCommandKeyForSelected', command);
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         command.key = key;
         this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
-      }
+      });
     },
     changeCommandParamsForSelected(command, params) {
       console.log('> useQueriesStore -> changeCommandKeyForSelected', command);
-      if (this.isQuerySelected) {
+      return this._selectedGuard().then(() => {
         command.params = params;
         this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
-      }
+      });
+    },
+    _selectedGuard() {
+      return new Promise((resolve, reject) => {
+        if (this.isQueryNotSelected) {
+          const message = 'No query selected to modify';
+          window.alert(message);
+          reject(message);
+        } else resolve();
+      });
     },
   },
   getters: {
