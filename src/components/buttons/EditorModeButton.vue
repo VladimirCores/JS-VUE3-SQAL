@@ -11,7 +11,7 @@ defineEmits(['selected']);
 </script>
 <template>
   <button
-    class="btn w-full text-xs text-gray-700 py-2 border-b-1 border-gray-300"
+    class="btn w-full text-xs text-gray-700 pb-2 pt-3 border-b-1 border-gray-300"
     :class="{ '!bg-gray-200 font-bold border-b-none': props.isEnabled }"
     @click="$emit('selected')"
   >
