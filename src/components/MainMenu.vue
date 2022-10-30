@@ -42,7 +42,7 @@ const onSelectQuery = async (query) => {
           <span class="text-sm">{{ index + 1 }}. {{ item.name }}</span>
           <button
             v-if="item.isSelected"
-            class="i-ic:outline-delete mr-2 bg-gray hover:bg-dark"
+            class="i-ic:outline-delete mr-2 bg-gray hover:bg-red"
             @click="onDeleteSelectedQuery"
           />
         </li>
