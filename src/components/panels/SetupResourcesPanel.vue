@@ -14,7 +14,7 @@ const domInputSelectedName = ref(null);
 
 const onUpdateSelectedQueryName = () => {
   console.log('> SetupResourcesPanel -> updateSelectedQueryName', domInputSelectedName.value);
-  queriesStore.updateSelectedName(domInputSelectedName.value).catch(() => {
+  queriesStore.updateSelectedName(domInputSelectedName.value.value).catch(() => {
     domInputSelectedName.value.value = '';
   });
 };
