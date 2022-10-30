@@ -73,6 +73,7 @@
           "arrowParens": "always"
         }
       ],
+      "vue/valid-define-emits": 0,
       "vue/max-attributes-per-line": [
         "error",
         {

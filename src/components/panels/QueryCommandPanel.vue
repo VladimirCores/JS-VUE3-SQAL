@@ -52,7 +52,7 @@ const onCleanQuery = () => {
       <div class="flex-col">
         <button
           :disabled="!canExecuteQuery"
-          class="py-1 px-2 enabled:bg-light-400 enabled:hover:bg-light-50 enabled:active:bg-violet-700 disabled:bg-light-900 border-1 border-gray-500 rounded"
+          class="btn btn-rounded-border"
           @click="onExecuteQuery"
         >
           Execute

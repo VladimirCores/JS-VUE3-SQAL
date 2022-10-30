@@ -37,6 +37,8 @@ export default defineConfig({
       shortcuts: {
         'custom-input':
           'py-1 px-1 border-b-1 border-spacing-y-2 bg-transparent focus:outline-none focus:border-gray-300',
+        btn: 'py-1 px-2 enabled:bg-light-400 enabled:hover:bg-light-50',
+        'btn-rounded-border': 'enabled:active:bg-violet-700 disabled:bg-light-900 border-1 border-gray-500 rounded',
       },
       presets: [
         presetUno(),
