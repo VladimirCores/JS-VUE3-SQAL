@@ -5,6 +5,7 @@ import LeftMenu from '@/components/MainMenu.vue';
 import SetupResourcesPanel from '@/components/panels/SetupResourcesPanel.vue';
 import SourceAttributesPanel from '@/components/panels/SourceAttributesPanel.vue';
 import QueryCommandPanel from '@/components/panels/QueryCommandPanel.vue';
+import QueryVisualEditorPanel from '@/components/panels/QueryVisualEditorPanel.vue';
 import QueryResultsPanel from '@/components/panels/QueryResultsPanel.vue';
 import EditorModeButton from '@/components/buttons/EditorModeButton.vue';
 
@@ -13,7 +14,7 @@ import { useSourcesStore } from '@/store/sources.js';
 const sourcesStore = useSourcesStore();
 const { isAttributesPanelOpened } = storeToRefs(sourcesStore);
 
-let isModeCommand = ref(true);
+let isModeCommand = ref(false);
 const selectCommandMode = () => {
   console.log('> App -> selectCommandMode');
   if (!isModeCommand.value) isModeCommand.value = true;
@@ -51,8 +52,11 @@ const selectEditorMode = () => {
             <flex-col class="flex space-y-1">
               <flex-row>
                 <flex-col class="flex space-y-2">
-                  <flex-row>
+                  <flex-row v-if="isModeCommand">
                     <QueryCommandPanel />
+                  </flex-row>
+                  <flex-row v-if="!isModeCommand">
+                    <QueryVisualEditorPanel />
                   </flex-row>
                 </flex-col>
               </flex-row>

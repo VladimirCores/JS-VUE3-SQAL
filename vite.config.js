@@ -38,6 +38,8 @@ export default defineConfig({
       shortcuts: {
         'custom-input':
           'py-1 px-1 border-b-1 border-spacing-y-2 bg-transparent focus:outline-none focus:border-gray-300',
+        'btn-icon-circle':
+          'disabled:text-gray-300 enabled:text-gray-600 enabled:hover:text-gray-800 enabled:active:text-gray-500',
         btn: 'py-1 px-2 enabled:bg-light-400 enabled:hover:bg-light-50',
         'btn-rounded-border':
           'enabled:active:bg-light-50 disabled:bg-light-900 disabled:text-gray-600 border-1 border-gray-500 rounded',

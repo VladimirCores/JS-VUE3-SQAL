@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { QueryVO, ResultRowVO, ResultsVO } from '@/model/vos';
+import { QueryCommandVO, QueryVO, ResultRowVO, ResultsVO } from '@/model/vos';
 import LocalStorageKeys from '@/constants/local';
 import {
   utilDelay,
@@ -68,6 +68,9 @@ export const useQueriesStore = defineStore('queries', {
       console.log('> useQueriesStore -> updateSelectedCommand:', { text });
       if (this.isQuerySelected) {
         this.selected.command = text;
+        if (text?.length === 0) {
+          this.selected.commands = [];
+        }
       }
     },
     updateSelectedResults(results) {
@@ -79,7 +82,36 @@ export const useQueriesStore = defineStore('queries', {
     appendToSelectedCommand(text) {
       console.log('> useQueriesStore -> appendToSelectedCommand:', { text });
       if (this.isQuerySelected) {
-        this.updateSelectedCommand(this.selected.command + ` ${text},`);
+        const param = `${text},`;
+        this.updateSelectedCommand(this.selected.command + param);
+        this.selected.commands[this.selected.commands.length - 1].params += param;
+      }
+    },
+    appendCommandToSelected() {
+      console.log('> useQueriesStore -> appendCommandToSelected');
+      if (this.isQuerySelected) {
+        this.selected.commands.push(new QueryCommandVO(Date.now(), '', ''));
+      }
+    },
+    removeCommandFromSelected(command) {
+      console.log('> useQueriesStore -> removeCommandFromSelected', command);
+      if (this.isQuerySelected) {
+        const index = this.selected.commands.indexOf(command);
+        this.selected.commands.splice(index, 1);
+      }
+    },
+    changeCommandKeyForSelected(command, key) {
+      console.log('> useQueriesStore -> changeCommandKeyForSelected', command);
+      if (this.isQuerySelected) {
+        command.key = key;
+        this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
+      }
+    },
+    changeCommandParamsForSelected(command, params) {
+      console.log('> useQueriesStore -> changeCommandKeyForSelected', command);
+      if (this.isQuerySelected) {
+        command.params = params;
+        this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
       }
     },
   },
@@ -90,9 +122,17 @@ export const useQueriesStore = defineStore('queries', {
     isQueryNotSelected: (state) => {
       return state.selected === null;
     },
+    isQueryWithCommands: (state) => {
+      return state.selected?.commands.length > 0;
+    },
     canExecuteQuery: (state) => {
       return state.selected?.command?.length > 0 || false;
     },
+    selectedQueryCommandFomCommands: (state) =>
+      state.selected.commands
+        .filter((c) => !!c.key)
+        .map((c) => `${c.key} ${c.params}`)
+        .join(' '),
   },
   persist: {
     storage: localStorage,

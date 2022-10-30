@@ -59,7 +59,6 @@ const onOpenCloseSourcePanel = () => {
           <select
             name="sources"
             class="custom-input"
-            placeholder="Select source"
             @change="onSelectSource"
           >
             <option
