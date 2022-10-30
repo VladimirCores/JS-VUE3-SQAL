@@ -34,7 +34,7 @@ const onOpenCloseSourcePanel = () => {
 <template>
   <flex class="px-4 pb-2 pt-3 justify-between items-center">
     <div class="flex flex-col">
-      <small class="text-gray-500 px-1">Selected:</small>
+      <small class="text-gray-500 px-1">Selected name: <sup class="text-gray-400">(Enter)</sup></small>
       <input
         ref="domInputSelectedName"
         :value="query?.name"
