@@ -7,18 +7,22 @@ const queriesStore = useQueriesStore();
 const sourcesStore = useSourcesStore();
 
 const { selected: query } = storeToRefs(queriesStore);
-const { list: sources, isLoadingSource } = storeToRefs(sourcesStore);
+const { list: sources, isLoadingSource, isSourcePanelOpened } = storeToRefs(sourcesStore);
 
 const onUpdateSelectedQueryName = (e) => {
-  console.log('> SelectPanel -> updateSelectedQueryName', e);
+  console.log('> SetupResourcesPanel -> updateSelectedQueryName', e);
   queriesStore.updateSelectedName(e.currentTarget.value);
 };
 
 const onSelectSource = (e) => {
-  console.log('> SelectPanel -> selectSource', e.currentTarget);
+  console.log('> SetupResourcesPanel -> selectSource', e.currentTarget);
   const index = e.currentTarget.selectedIndex;
   const options = e.currentTarget.options;
   sourcesStore.select(options[index].value);
+};
+const onOpenCloseSourcePanel = () => {
+  console.log('> SetupResourcesPanel -> onOpenCloseSourcePanel', isSourcePanelOpened.value);
+  isSourcePanelOpened.value = !isSourcePanelOpened.value;
 };
 </script>
 
@@ -33,16 +37,25 @@ const onSelectSource = (e) => {
         @keyup.enter="onUpdateSelectedQueryName"
       />
     </div>
-    <div class="flex flex-col w-36">
-      <div class="flex flex-row items-top spacer-x-4">
-        <div class="flex flex-col w-4 h-full">
+    <div class="flex flex-col">
+      <div class="flex flex-row items-top justify-end space-x-2">
+        <div class="flex flex-col h-full">
           <span
             v-show="isLoadingSource"
             class="i-ic:baseline-rotate-right animate-spin text-xl bg-yellow"
           ></span>
         </div>
-        <div class="flex flex-col">
-          <small class="text-gray-500 px-2">Source:</small>
+        <div class="flex flex-col w-full">
+          <div class="flex flex-row justify-between items-center text-gray-500">
+            <small class="px-2">Source:</small>
+            <button @click="onOpenCloseSourcePanel">
+              <span
+                class="i-ic:round-keyboard-double-arrow-right"
+                :class="{ 'rotate-180': isSourcePanelOpened }"
+              ></span>
+            </button>
+          </div>
+
           <select
             name="sources"
             class="custom-input"

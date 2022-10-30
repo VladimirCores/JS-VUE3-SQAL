@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import LeftMenu from '@/components/MainMenu.vue';
-import SetupResourcesPanel from '@/components/panels/SetupResoucesPanel.vue';
+import SetupResourcesPanel from '@/components/panels/SetupResourcesPanel.vue';
 import QueryCommandPanel from '@/components/panels/QueryCommandPanel.vue';
 import QueryResultsPanel from '@/components/panels/QueryResultsPanel.vue';
 import EditorModeButton from '@/components/buttons/EditorModeButton.vue';

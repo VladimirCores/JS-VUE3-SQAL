@@ -25,6 +25,7 @@ export const useSourcesStore = defineStore('sources', {
     ],
     selected: null,
     isLoadingSource: false,
+    isSourcePanelOpened: false,
   }),
   actions: {
     async select(id) {
