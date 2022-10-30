@@ -17,8 +17,10 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@iconify/json": "^2.1.130",
     "@unocss/preset-icons": "^0.46.1",
+    "@unocss/preset-tagify": "^0.46.1",
     "@unocss/preset-web-fonts": "^0.46.1",
     "@unocss/reset": "^0.46.1",
     "@vitejs/plugin-vue": "^3.2.0",
@@ -69,6 +71,17 @@
           "trailingComma": "all",
           "bracketSpacing": true,
           "arrowParens": "always"
+        }
+      ],
+      "vue/max-attributes-per-line": [
+        "error",
+        {
+          "singleline": {
+            "max": 2
+          },
+          "multiline": {
+            "max": 1
+          }
         }
       ]
     }

@@ -9,3 +9,7 @@ export function utilFindSelectableAndPassToSetter(list, setter) {
   if (result) setter(result);
   return result;
 }
+
+export function utilDelay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

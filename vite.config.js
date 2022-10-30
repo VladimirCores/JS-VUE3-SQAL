@@ -15,6 +15,10 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  server: {
+    cors: true,
+    port: 8081,
+  },
   plugins: [
     vue(),
     eslint(),
@@ -36,6 +40,7 @@ export default defineConfig({
       },
       presets: [
         presetUno(),
+        presetTagify(),
         presetWebFonts({
           provider: 'google', // default provider
           sans: 'Inter',

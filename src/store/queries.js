@@ -1,10 +1,16 @@
 import { defineStore } from 'pinia';
-import { QueryVO } from '@/model/vos';
+import { QueryVO, ResultRowVO, ResultsVO } from '@/model/vos';
 import LocalStorageKeys from '@/constants/local';
-import { utilFindSelectableAndPassToSetter, utilFindSelectableByIdInListAndMarkIt } from '@/utils/generalUtils.js';
+import {
+  utilDelay,
+  utilFindSelectableAndPassToSetter,
+  utilFindSelectableByIdInListAndMarkIt,
+} from '@/utils/generalUtils.js';
+import { utilMathRandomRange } from '@/utils/mathUtils.js';
+import { faker } from '@faker-js/faker';
 
 export const useQueriesStore = defineStore('queries', {
-  state: () => ({ list: [], selected: null }),
+  state: () => ({ list: [], selected: null, isLoadingResults: false }),
   actions: {
     add(name) {
       console.log('> useQueriesStore -> add:', { name });
@@ -17,6 +23,31 @@ export const useQueriesStore = defineStore('queries', {
       if (!id && !(this.selected = null)) return;
       if (this.selected) this.selected.isSelected = false;
       this.selected = utilFindSelectableByIdInListAndMarkIt(this.list, id);
+    },
+    async executeCurrentQueryCommand() {
+      console.log('> useQueriesStore -> executeCurrentQueryCommand:', { command: this.selected.command });
+      this.isLoadingResults = true;
+      const resultsVO = await utilDelay(1000).then(() => {
+        const columns = [...Array(utilMathRandomRange(10, 3))].map(() => {
+          return Math.random() > 0.5 ? '' : 10;
+        });
+        return new ResultsVO(
+          columns.map(() => faker.lorem.word()),
+          [...Array(utilMathRandomRange(20, 5))].map((v, index) => {
+            return new ResultRowVO(
+              index,
+              columns.map((data) => {
+                if (typeof data === 'string') return faker.lorem.sentence(utilMathRandomRange(10, 1));
+                if (typeof data === 'number') return faker.datatype.number(10000000);
+                return null;
+              }),
+            );
+          }),
+        );
+      });
+      console.log('> \t resultsVO:', resultsVO);
+      this.updateSelectedResults(resultsVO);
+      this.isLoadingResults = false;
     },
     deleteSelected() {
       console.log('> useQueriesStore -> deleteSelected', this.selected);
@@ -31,11 +62,26 @@ export const useQueriesStore = defineStore('queries', {
       console.log('> useQueriesStore -> updateSelectedName:', { value });
       this.selected.name = value;
     },
+    updateSelectedCommand(text) {
+      console.log('> useQueriesStore -> updateSelectedCommand:', { text });
+      this.selected.command = text;
+    },
+    updateSelectedResults(results) {
+      console.log('> useQueriesStore -> updateSelectedData:', { results });
+      this.selected.results = results;
+    },
+  },
+  getters: {
+    isQueryNotSelected: (state) => {
+      return state.selected === null;
+    },
+    canExecuteQuery: (state) => {
+      return state.selected?.command?.length > 0 || false;
+    },
   },
   persist: {
     storage: localStorage,
-    deserialize: QueryVO.fromString,
-    key: LocalStorageKeys.QUERIES_STORE,
+    key: LocalStorageKeys.Store.QUERIES,
     afterRestore: ({ store }) => {
       const result = utilFindSelectableAndPassToSetter(store.list, (s) => store.select(s.id));
       console.log('> useQueriesStore -> afterRestore:', { selectedQueryVO: result });

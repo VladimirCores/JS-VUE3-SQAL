@@ -6,4 +6,7 @@ import App from './App.vue';
 import 'uno.css';
 import '@unocss/reset/tailwind.css';
 
-createApp(App).use(createPinia().use(piniaPluginPersistedstate)).mount('#app');
+const store = createPinia();
+store.use(piniaPluginPersistedstate);
+
+createApp(App).use(store).mount('#app');
