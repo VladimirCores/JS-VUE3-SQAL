@@ -16,6 +16,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    minify: 'terser',
+  },
   server: {
     cors: true,
     port: 8081,
