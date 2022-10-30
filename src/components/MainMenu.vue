@@ -22,7 +22,7 @@ const onSelectQuery = async (query) => {
 </script>
 
 <template>
-  <aside class="px-2 bg-gray-100">
+  <aside class="px-2 bg-gray-100 border-r-1 border-gray-200">
     <section class="flex flex-row justify-between items-center py-2 b-y-1">
       <small class="text-gray-600 font-normal">Queries</small>
       <button

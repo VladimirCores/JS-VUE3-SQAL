@@ -25,9 +25,12 @@ export const useSourcesStore = defineStore('sources', {
     ],
     selected: null,
     isLoadingSource: false,
-    isSourcePanelOpened: false,
+    isAttributesPanelOpened: false,
   }),
   actions: {
+    triggerVisibilityOfAttributesPanel() {
+      this.isAttributesPanelOpened = !this.isAttributesPanelOpened;
+    },
     async select(id) {
       console.log('> useSourcesStore -> select:', { id });
       if (!id && !(this.selected = null)) return;

@@ -7,7 +7,7 @@ const queriesStore = useQueriesStore();
 const sourcesStore = useSourcesStore();
 
 const { selected: query } = storeToRefs(queriesStore);
-const { list: sources, isLoadingSource, isSourcePanelOpened } = storeToRefs(sourcesStore);
+const { list: sources, isLoadingSource, isAttributesPanelOpened } = storeToRefs(sourcesStore);
 
 const onUpdateSelectedQueryName = (e) => {
   console.log('> SetupResourcesPanel -> updateSelectedQueryName', e);
@@ -21,8 +21,8 @@ const onSelectSource = (e) => {
   sourcesStore.select(options[index].value);
 };
 const onOpenCloseSourcePanel = () => {
-  console.log('> SetupResourcesPanel -> onOpenCloseSourcePanel', isSourcePanelOpened.value);
-  isSourcePanelOpened.value = !isSourcePanelOpened.value;
+  console.log('> SetupResourcesPanel -> onOpenCloseSourcePanel', isAttributesPanelOpened.value);
+  sourcesStore.triggerVisibilityOfAttributesPanel();
 };
 </script>
 
@@ -51,7 +51,7 @@ const onOpenCloseSourcePanel = () => {
             <button @click="onOpenCloseSourcePanel">
               <span
                 class="i-ic:round-keyboard-double-arrow-right"
-                :class="{ 'rotate-180': isSourcePanelOpened }"
+                :class="{ 'rotate-180': isAttributesPanelOpened }"
               ></span>
             </button>
           </div>

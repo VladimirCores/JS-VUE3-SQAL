@@ -1,10 +1,17 @@
 <script setup>
 import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 import LeftMenu from '@/components/MainMenu.vue';
 import SetupResourcesPanel from '@/components/panels/SetupResourcesPanel.vue';
+import SourceAttributesPanel from '@/components/panels/SourceAttributesPanel.vue';
 import QueryCommandPanel from '@/components/panels/QueryCommandPanel.vue';
 import QueryResultsPanel from '@/components/panels/QueryResultsPanel.vue';
 import EditorModeButton from '@/components/buttons/EditorModeButton.vue';
+
+import { useSourcesStore } from '@/store/sources.js';
+
+const sourcesStore = useSourcesStore();
+const { isAttributesPanelOpened } = storeToRefs(sourcesStore);
 
 let isModeCommand = ref(true);
 const selectCommandMode = () => {
@@ -22,7 +29,7 @@ const selectEditorMode = () => {
       <h1 class="text-white font-bold text-xs">SQAL</h1>
     </header>
     <main class="flex flex-row h-screen">
-      <LeftMenu class="flex flex-col w-64 h-full" />
+      <LeftMenu class="flex flex-col max-w-72 w-64 h-full" />
       <section class="flex flex-col w-full h-full bg-gray-50 p-4 overflow-y-scroll custom-scrollbar">
         <flex-col class="flex bg-gray-100 rounded">
           <flex-row>
@@ -56,7 +63,10 @@ const selectEditorMode = () => {
           </flex-row>
         </flex-col>
       </section>
-      <!--      <LeftMenu class="flex flex-col w-64 h-full" />-->
+      <SourceAttributesPanel
+        v-if="isAttributesPanelOpened"
+        class="flex flex-col w-64"
+      />
     </main>
   </div>
 </template>

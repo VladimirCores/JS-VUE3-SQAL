@@ -41,7 +41,7 @@ export default defineConfig({
         btn: 'py-1 px-2 enabled:bg-light-400 enabled:hover:bg-light-50',
         'btn-rounded-border': 'enabled:active:bg-violet-700 disabled:bg-light-900 border-1 border-gray-500 rounded',
         'custom-scrollbar':
-          'scrollbar scrollbar-rounded scrollbar-w-4px scrollbar-radius-2 scrollbar-track-radius-4 scrollbar-thumb-radius-4',
+          'scrollbar scrollbar-rounded scrollbar-track-color-transparent scrollbar-w-4px scrollbar-radius-2 scrollbar-track-radius-4 scrollbar-thumb-radius-4',
       },
       presets: [
         presetUno(),
