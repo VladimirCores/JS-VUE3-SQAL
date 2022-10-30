@@ -122,6 +122,9 @@ export const useQueriesStore = defineStore('queries', {
     isQueryNotSelected: (state) => {
       return state.selected === null;
     },
+    isSelectedQueryWithResults: (state) => {
+      return state.selected?.results?.length > 0;
+    },
     isQueryWithCommands: (state) => {
       return state.selected?.commands.length > 0;
     },

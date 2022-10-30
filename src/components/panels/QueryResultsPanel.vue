@@ -6,12 +6,12 @@ const queryStore = useQueriesStore();
 const { selected, isLoadingResults } = storeToRefs(queryStore);
 </script>
 <template>
-  <div class="flex flex-col space-y-3 pb-5">
+  <div class="flex flex-col space-y-3 pb-2">
     <div class="flex flex-row items-center space-x-2">
       <flex-col class="text-gray-500"><small>Results</small></flex-col>
       <flex-col class="border-t-1 mt-1.5 border-gray-400 w-full"></flex-col>
     </div>
-    <div class="flex-row">
+    <div class="flex-row pb-10">
       <div v-if="isLoadingResults">Loading ...</div>
       <table-fixed
         v-else-if="selected?.results"
@@ -44,6 +44,12 @@ const { selected, isLoadingResults } = storeToRefs(queryStore);
           </table-row>
         </table-row-group>
       </table-fixed>
+      <div
+        v-else
+        class="w-full text-center"
+      >
+        <small class="text-gray-400">Create and execute query to get some results</small>
+      </div>
     </div>
   </div>
 </template>

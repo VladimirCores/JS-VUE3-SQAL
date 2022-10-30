@@ -30,7 +30,7 @@ const onCleanQuery = () => {
     </flex-row>
     <flex-row>
       <textarea
-        class="w-full h-16 text-lg rounded focus:outline-none p-2 border-1 border-gray-500"
+        class="w-full h-24 text-lg rounded focus:outline-none p-2 border-1 border-gray-500"
         :disabled="isQueryNotSelected"
         :value="query?.command"
         @input="onUpdateSelectedQueryCommand"

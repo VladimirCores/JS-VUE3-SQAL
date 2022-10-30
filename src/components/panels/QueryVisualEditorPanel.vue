@@ -28,7 +28,7 @@ const onCommandParamsChanged = (value, command) => {
 </script>
 
 <template>
-  <flex-col class="flex w-full space-y-1 pb-8">
+  <flex-col class="flex w-full space-y-1">
     <flex-row>
       <small class="text-gray-500 px-1">Add operation and parameters:</small>
     </flex-row>
@@ -44,7 +44,7 @@ const onCommandParamsChanged = (value, command) => {
         >
           <flex-col>
             <select
-              class="custom-input font-bold pl-0 border-gray-300 active:border-gray-400 focus:border-gray-400"
+              class="custom-input font-bold pl-1 border-gray-300 active:border-gray-400 focus:border-gray-400"
               @change="onCommandKeyChanged($event.currentTarget, command)"
             >
               <option

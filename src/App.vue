@@ -26,32 +26,32 @@ const selectEditorMode = () => {
 </script>
 <template>
   <div class="flex flex-col h-screen overflow-hidden">
-    <header class="flex flex-row justify-center py-2 pr-4 bg-gray-200">
+    <header class="flex flex-row justify-center py-2 pr-4 bg-gray-200 select-none">
       <h1 class="text-white font-bold text-xs">SQAL</h1>
     </header>
     <main class="flex flex-row h-screen">
       <LeftMenu class="flex flex-col max-w-72 w-64 h-full" />
       <section class="flex flex-col w-full h-full bg-gray-50 p-4 overflow-y-scroll custom-scrollbar">
-        <flex-col class="flex bg-gray-100 rounded">
+        <flex-col class="flex bg-gray-100 space-y-1 rounded">
           <flex-row>
             <SetupResourcesPanel />
           </flex-row>
-          <flex-row class="flex w-full justify-around">
-            <EditorModeButton
-              title="Commands"
-              :is-enabled="isModeCommand"
-              @selected="selectCommandMode"
-            />
-            <EditorModeButton
-              title="Visual Editor"
-              :is-enabled="!isModeCommand"
-              @selected="selectEditorMode"
-            />
-          </flex-row>
-          <flex-row class="p-4 bg-gray-200">
-            <flex-col class="flex space-y-1">
+          <flex-row class="bg-gray-200">
+            <flex-col class="flex">
+              <flex-row class="flex w-full justify-around">
+                <EditorModeButton
+                  title="Commands"
+                  :is-enabled="isModeCommand"
+                  @selected="selectCommandMode"
+                />
+                <EditorModeButton
+                  title="Visual Editor"
+                  :is-enabled="!isModeCommand"
+                  @selected="selectEditorMode"
+                />
+              </flex-row>
               <flex-row>
-                <flex-col class="flex space-y-2">
+                <flex-col class="flex space-y-2 p-4">
                   <flex-row v-if="isModeCommand">
                     <QueryCommandPanel />
                   </flex-row>
@@ -60,10 +60,13 @@ const selectEditorMode = () => {
                   </flex-row>
                 </flex-col>
               </flex-row>
-              <flex-row>
-                <QueryResultsPanel />
-              </flex-row>
             </flex-col>
+          </flex-row>
+          <flex-row
+            v-if="isModeCommand"
+            class="bg-gray-200"
+          >
+            <QueryResultsPanel class="p-4" />
           </flex-row>
         </flex-col>
       </section>
