@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useQueriesStore } from '@/store/queries.js';
 import { useSourcesStore } from '@/store/sources.js';
@@ -9,9 +10,13 @@ const sourcesStore = useSourcesStore();
 const { selected: query } = storeToRefs(queriesStore);
 const { list: sources, isLoadingSource, isAttributesPanelOpened } = storeToRefs(sourcesStore);
 
-const onUpdateSelectedQueryName = (e) => {
-  console.log('> SetupResourcesPanel -> updateSelectedQueryName', e);
-  queriesStore.updateSelectedName(e.currentTarget.value);
+const domInputSelectedName = ref(null);
+
+const onUpdateSelectedQueryName = () => {
+  console.log('> SetupResourcesPanel -> updateSelectedQueryName', domInputSelectedName.value);
+  queriesStore.updateSelectedName(domInputSelectedName.value).catch(() => {
+    domInputSelectedName.value.value = '';
+  });
 };
 
 const onSelectSource = (e) => {
@@ -31,9 +36,10 @@ const onOpenCloseSourcePanel = () => {
     <div class="flex flex-col">
       <small class="text-gray-500 px-1">Selected:</small>
       <input
+        ref="domInputSelectedName"
         :value="query?.name"
         class="custom-input"
-        placeholder="Create query from menu"
+        placeholder="Create query from menu first"
         @keyup.enter="onUpdateSelectedQueryName"
       />
     </div>
