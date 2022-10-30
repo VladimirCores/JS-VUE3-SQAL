@@ -82,7 +82,8 @@ const onCommandParamsChanged = (value, command) => {
         </flex-row>
       </flex-col>
     </flex-row>
-    <flex-row class="flex justify-end pt-2">
+    <flex-row class="flex justify-between pt-2">
+      <small class="text-gray-400">Changes from this editor overrides current command</small>
       <button
         :disabled="!isQuerySelected"
         class="btn-icon-circle justify-self-end place-self-end"
