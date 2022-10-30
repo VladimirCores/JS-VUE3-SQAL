@@ -23,7 +23,7 @@ const selectEditorMode = () => {
     </header>
     <main class="flex flex-row h-screen">
       <LeftMenu class="flex flex-col w-64 h-full" />
-      <section class="flex flex-col w-full h-full bg-gray-50 p-4 overflow-y-scroll">
+      <section class="flex flex-col w-full h-full bg-gray-50 p-4 overflow-y-scroll custom-scrollbar">
         <flex-col class="flex bg-gray-100 rounded">
           <flex-row>
             <SetupResourcesPanel />
@@ -56,6 +56,7 @@ const selectEditorMode = () => {
           </flex-row>
         </flex-col>
       </section>
+      <!--      <LeftMenu class="flex flex-col w-64 h-full" />-->
     </main>
   </div>
 </template>

@@ -7,6 +7,7 @@ import { presetAttributify, presetUno } from 'unocss';
 import presetIcons from '@unocss/preset-icons';
 import presetTagify from '@unocss/preset-tagify';
 import presetWebFonts from '@unocss/preset-web-fonts';
+import { presetScrollbar } from 'unocss-preset-scrollbar';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -39,6 +40,8 @@ export default defineConfig({
           'py-1 px-1 border-b-1 border-spacing-y-2 bg-transparent focus:outline-none focus:border-gray-300',
         btn: 'py-1 px-2 enabled:bg-light-400 enabled:hover:bg-light-50',
         'btn-rounded-border': 'enabled:active:bg-violet-700 disabled:bg-light-900 border-1 border-gray-500 rounded',
+        'custom-scrollbar':
+          'scrollbar scrollbar-rounded scrollbar-w-4px scrollbar-radius-2 scrollbar-track-radius-4 scrollbar-thumb-radius-4',
       },
       presets: [
         presetUno(),
@@ -54,6 +57,9 @@ export default defineConfig({
             display: 'inline-block',
             'vertical-align': 'middle',
           },
+        }),
+        presetScrollbar({
+          // config
         }),
       ],
     }),
