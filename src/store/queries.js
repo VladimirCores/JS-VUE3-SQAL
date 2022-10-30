@@ -60,18 +60,33 @@ export const useQueriesStore = defineStore('queries', {
     },
     updateSelectedName(value) {
       console.log('> useQueriesStore -> updateSelectedName:', { value });
-      this.selected.name = value;
+      if (this.isQuerySelected) {
+        this.selected.name = value;
+      }
     },
     updateSelectedCommand(text) {
       console.log('> useQueriesStore -> updateSelectedCommand:', { text });
-      this.selected.command = text;
+      if (this.isQuerySelected) {
+        this.selected.command = text;
+      }
     },
     updateSelectedResults(results) {
       console.log('> useQueriesStore -> updateSelectedData:', { results });
-      this.selected.results = results;
+      if (this.isQuerySelected) {
+        this.selected.results = results;
+      }
+    },
+    appendToSelectedCommand(text) {
+      console.log('> useQueriesStore -> appendToSelectedCommand:', { text });
+      if (this.isQuerySelected) {
+        this.updateSelectedCommand(this.selected.command + ` ${text},`);
+      }
     },
   },
   getters: {
+    isQuerySelected: (state) => {
+      return state.selected !== null;
+    },
     isQueryNotSelected: (state) => {
       return state.selected === null;
     },

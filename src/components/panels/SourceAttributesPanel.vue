@@ -6,12 +6,11 @@ import { useSourcesStore } from '@/store/sources.js';
 const queriesStore = useQueriesStore();
 const sourcesStore = useSourcesStore();
 
-const { selected: query } = storeToRefs(queriesStore);
 const { selected: source } = storeToRefs(sourcesStore);
 
 const onSourceAttributeClick = (attr) => {
   console.log('> SourceAttributesPanel -> onSourceAttributeClick', attr);
-  queriesStore.updateSelectedCommand(query.value.command + ` ${attr},`);
+  queriesStore.appendToSelectedCommand(attr);
 };
 </script>
 <template>
