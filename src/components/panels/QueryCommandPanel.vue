@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useQueriesStore } from '@/store/queries.js';
 
 const queriesStore = useQueriesStore();
-const { selected: query, isQueryNotSelected, canExecuteQuery } = storeToRefs(queriesStore);
+const { selected: query, lastExecutedQuery, isQueryNotSelected, canExecuteQuery } = storeToRefs(queriesStore);
 
 const onUpdateSelectedQueryCommand = (e) => {
   const value = e.currentTarget.value;
@@ -36,24 +36,34 @@ const onCleanQuery = () => {
         @input="onUpdateSelectedQueryCommand"
       ></textarea>
     </flex-row>
-    <flex-row class="flex justify-end items-center space-x-4">
-      <flex-col v-if="!isQueryNotSelected">
-        <button
-          :disabled="!canExecuteQuery"
-          class="py-1 px-2 text-gray-400 enabled:hover:text-red"
-          @click="onCleanQuery"
-        >
-          <small>Clean</small>
-        </button>
+    <flex-row class="flex justify-between items-center space-x-4">
+      <flex-col class="flex">
+        <flex-row>
+          <small class="text-gray-500">Last executed: </small>
+          <small class="text-gray-400">{{ lastExecutedQuery }}</small>
+        </flex-row>
       </flex-col>
       <flex-col>
-        <button
-          :disabled="!canExecuteQuery"
-          class="btn btn-rounded-border"
-          @click="onExecuteQuery"
-        >
-          Execute
-        </button>
+        <flex-row class="flex items-center space-x-4">
+          <flex-col v-if="!isQueryNotSelected">
+            <button
+              :disabled="!canExecuteQuery"
+              class="py-1 px-2 text-gray-400 enabled:hover:text-red"
+              @click="onCleanQuery"
+            >
+              <small>Clean</small>
+            </button>
+          </flex-col>
+          <flex-col>
+            <button
+              :disabled="!canExecuteQuery"
+              class="btn btn-rounded-border"
+              @click="onExecuteQuery"
+            >
+              Execute
+            </button>
+          </flex-col>
+        </flex-row>
       </flex-col>
     </flex-row>
   </flex-col>

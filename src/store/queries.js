@@ -10,7 +10,7 @@ import { utilMathRandomRange } from '@/utils/mathUtils.js';
 import { faker } from '@faker-js/faker';
 
 export const useQueriesStore = defineStore('queries', {
-  state: () => ({ list: [], selected: null, isLoadingResults: false }),
+  state: () => ({ list: [], selected: null, isLoadingResults: false, lastExecutedQuery: '' }),
   actions: {
     add(name) {
       console.log('> useQueriesStore -> add:', { name });
@@ -47,6 +47,7 @@ export const useQueriesStore = defineStore('queries', {
       });
       console.log('> \t resultsVO:', resultsVO);
       this.updateSelectedResults(resultsVO);
+      this.lastExecutedQuery = this.selected.command;
       this.isLoadingResults = false;
     },
     deleteSelected() {
