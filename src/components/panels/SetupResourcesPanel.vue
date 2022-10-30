@@ -27,7 +27,7 @@ const onOpenCloseSourcePanel = () => {
 </script>
 
 <template>
-  <flex class="p-4 justify-between items-center">
+  <flex class="px-4 pb-2 pt-3 justify-between items-center">
     <div class="flex flex-col">
       <small class="text-gray-500 px-1">Selected:</small>
       <input

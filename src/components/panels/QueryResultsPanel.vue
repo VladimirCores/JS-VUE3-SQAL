@@ -11,11 +11,11 @@ const { selected, isLoadingResults } = storeToRefs(queryStore);
       <flex-col class="text-gray-500"><small>Results</small></flex-col>
       <flex-col class="border-t-1 mt-1.5 border-gray-400 w-full"></flex-col>
     </div>
-    <div class="flex-row pb-10">
+    <div class="flex-row pb-3">
       <div v-if="isLoadingResults">Loading ...</div>
       <table-fixed
         v-else-if="selected?.results"
-        class="table border-collapse w-full"
+        class="table border-collapse w-full mb-6"
       >
         <table-header-group>
           <table-row>

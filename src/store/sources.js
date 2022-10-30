@@ -25,7 +25,7 @@ export const useSourcesStore = defineStore('sources', {
     ],
     selected: null,
     isLoadingSource: false,
-    isAttributesPanelOpened: false,
+    isAttributesPanelOpened: true,
   }),
   actions: {
     triggerVisibilityOfAttributesPanel() {

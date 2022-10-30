@@ -14,7 +14,7 @@ import { useSourcesStore } from '@/store/sources.js';
 const sourcesStore = useSourcesStore();
 const { isAttributesPanelOpened } = storeToRefs(sourcesStore);
 
-let isModeCommand = ref(false);
+let isModeCommand = ref(true);
 const selectCommandMode = () => {
   console.log('> App -> selectCommandMode');
   if (!isModeCommand.value) isModeCommand.value = true;
@@ -26,8 +26,8 @@ const selectEditorMode = () => {
 </script>
 <template>
   <div class="flex flex-col h-screen overflow-hidden">
-    <header class="flex flex-row justify-center py-2 pr-4 bg-gray-200 select-none">
-      <h1 class="text-white font-bold text-xs">SQAL</h1>
+    <header class="flex flex-row justify-center py-2 pr-4 bg-gray-200 select-none border-b-1 border-gray-300">
+      <h1 class="text-dark font-normal text-xs">SQAL</h1>
     </header>
     <main class="flex flex-row h-screen">
       <LeftMenu class="flex flex-col max-w-72 w-64 h-full" />

@@ -18,7 +18,7 @@ const onSourceAttributeClick = (attr) => {
     <flex-row class="py-2">
       <small class="text-gray-600 font-normal"> Available attributes:</small>
     </flex-row>
-    <flex-row class="">
+    <flex-row v-if="source">
       <flex-col class="flex text-gray-700">
         <flex-row
           v-for="attr in source.data"
@@ -33,6 +33,13 @@ const onSourceAttributeClick = (attr) => {
         </flex-row>
       </flex-col>
     </flex-row>
+    <div
+      v-else
+      class="leading-5"
+    >
+      <small class="text-gray-400"> Select source to see all available attributes. </small>
+      <small class="text-gray-400"> Click on attribute add it at the end of the query. </small>
+    </div>
   </section>
 </template>
 <style scoped></style>

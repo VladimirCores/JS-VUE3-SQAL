@@ -30,7 +30,10 @@ const onSelectQuery = async (query) => {
         @click="onAddQuery"
       />
     </section>
-    <section class="flex flex-row h-full mt-2">
+    <section
+      v-if="queries.length"
+      class="flex flex-row h-full mt-2"
+    >
       <ul class="list-decimal list-inside w-full flex flex-col">
         <li
           v-for="(item, index) in queries"
@@ -47,6 +50,13 @@ const onSelectQuery = async (query) => {
           />
         </li>
       </ul>
+    </section>
+    <section
+      v-else
+      class="leading-5 mt-2 pl-1"
+    >
+      <small class="text-gray-400"> Press plus button to create new query entity. </small>
+      <small class="text-gray-400"> You will be able to edit its name after creation and compose command. </small>
     </section>
   </aside>
 </template>
