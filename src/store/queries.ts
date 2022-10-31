@@ -2,17 +2,29 @@ import { defineStore } from 'pinia';
 import minifaker from 'minifaker';
 import 'minifaker/locales/en';
 
-import { QueryCommandVO, QueryVO, ResultRowVO, ResultsVO } from '@/model/vos';
+import { IQueryVO, QueryCommandVO, QueryVO, ResultRowVO, ResultsVO } from '@/model/vos';
 import LocalStorageKeys from '@/constants/local';
 import {
   utilDelay,
   utilFindSelectableAndPassToSetter,
   utilFindSelectableByIdInListAndMarkIt,
-} from '@/utils/generalUtils.js';
-import { utilMathRandomRange } from '@/utils/mathUtils.js';
+} from '@/utils/generalUtils';
+import { utilMathRandomRange } from '@/utils/mathUtils';
+
+interface IQueriesStoreState {
+  list: IQueryVO[];
+  selected?: IQueryVO | null | undefined;
+  isLoadingResults: boolean;
+  lastExecutedQuery: string;
+}
 
 export const useQueriesStore = defineStore('queries', {
-  state: () => ({ list: [], selected: null, isLoadingResults: false, lastExecutedQuery: '' }),
+  state: (): IQueriesStoreState => ({
+    list: [],
+    selected: null,
+    isLoadingResults: false,
+    lastExecutedQuery: '',
+  }),
   actions: {
     add(name) {
       console.log('> useQueriesStore -> add:', { name });
@@ -27,7 +39,7 @@ export const useQueriesStore = defineStore('queries', {
       this.selected = utilFindSelectableByIdInListAndMarkIt(this.list, id);
     },
     async executeCurrentQueryCommand() {
-      console.log('> useQueriesStore -> executeCurrentQueryCommand:', { command: this.selected.command });
+      console.log('> useQueriesStore -> executeCurrentQueryCommand:', { command: this.selected?.command });
       this.isLoadingResults = true;
       const resultsVO = await utilDelay(1000).then(() => {
         const columns = [...Array(utilMathRandomRange(10, 3))].map(() => {
@@ -49,8 +61,8 @@ export const useQueriesStore = defineStore('queries', {
         );
       });
       console.log('> \t resultsVO:', resultsVO);
-      this.updateSelectedResults(resultsVO);
-      this.lastExecutedQuery = this.selected.command;
+      await this.updateSelectedResults(resultsVO);
+      this.lastExecutedQuery = this.selected?.command || '';
       this.isLoadingResults = false;
     },
     deleteSelected() {
@@ -65,88 +77,88 @@ export const useQueriesStore = defineStore('queries', {
     updateSelectedName(value) {
       console.log('> useQueriesStore -> updateSelectedName:', { value });
       return this._selectedGuard().then(() => {
-        this.selected.name = value;
+        this.selected!.name = value;
       });
     },
     updateSelectedCommand(text) {
       console.log('> useQueriesStore -> updateSelectedCommand:', { text });
       return this._selectedGuard().then(() => {
-        this.selected.command = text;
+        this.selected!.command = text;
         if (text?.length === 0) {
-          this.selected.commands = [];
+          this.selected!.commands = [];
         }
       });
     },
     updateSelectedResults(results) {
       console.log('> useQueriesStore -> updateSelectedData:', { results });
       return this._selectedGuard().then(() => {
-        this.selected.results = results;
+        this.selected!.results = results;
       });
     },
     appendToSelectedCommand(text) {
       console.log('> useQueriesStore -> appendToSelectedCommand:', { text });
-      return this._selectedGuard().then(() => {
+      return this._selectedGuard().then(async () => {
         const param = `${text},`;
-        this.updateSelectedCommand(this.selected.command + param);
-        this.selected.commands[this.selected.commands.length - 1].params += param;
+        await this.updateSelectedCommand(this.selected!.command + param);
+        this.selected!.commands[this.selected!.commands.length - 1].params += param;
       });
     },
     appendCommandToSelected() {
       console.log('> useQueriesStore -> appendCommandToSelected');
       return this._selectedGuard().then(() => {
-        this.selected.commands.push(new QueryCommandVO(Date.now(), '', ''));
+        this.selected!.commands.push(new QueryCommandVO(Date.now(), '', ''));
       });
     },
     removeCommandFromSelected(command) {
       console.log('> useQueriesStore -> removeCommandFromSelected', command);
-      return this._selectedGuard().then(() => {
-        const index = this.selected.commands.indexOf(command);
-        this.selected.commands.splice(index, 1);
-        this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
+      return this._selectedGuard().then(async () => {
+        const index = this.selected!.commands.indexOf(command);
+        this.selected!.commands.splice(index, 1);
+        return this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
       });
     },
     changeCommandKeyForSelected(command, key) {
       console.log('> useQueriesStore -> changeCommandKeyForSelected', command);
       return this._selectedGuard().then(() => {
         command.key = key;
-        this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
+        return this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
       });
     },
     changeCommandParamsForSelected(command, params) {
       console.log('> useQueriesStore -> changeCommandKeyForSelected', command);
       return this._selectedGuard().then(() => {
         command.params = params;
-        this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
+        return this.updateSelectedCommand(this.selectedQueryCommandFomCommands);
       });
     },
     _selectedGuard() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve: (s: string) => void, reject) => {
         if (this.isQueryNotSelected) {
           const message = 'No query selected to modify';
           window.alert(message);
           reject(message);
-        } else resolve();
+        } else resolve('');
       });
     },
   },
   getters: {
-    isQuerySelected: (state) => {
+    isQuerySelected: (state: IQueriesStoreState) => {
       return state.selected !== null;
     },
-    isQueryNotSelected: (state) => {
+    isQueryNotSelected: (state: IQueriesStoreState) => {
       return state.selected === null;
     },
-    isSelectedQueryWithResults: (state) => {
-      return state.selected?.results?.length > 0;
+    isSelectedQueryWithResults: (state: IQueriesStoreState) => {
+      return state.selected?.results != null;
     },
-    isQueryWithCommands: (state) => {
-      return state.selected?.commands.length > 0;
+    isQueryWithCommands: (state: IQueriesStoreState) => {
+      return (!!state.selected && state.selected.commands?.length > 0) || false;
     },
-    canExecuteQuery: (state) => {
-      return state.selected?.command?.length > 0 || false;
+    canExecuteQuery: (state: IQueriesStoreState) => {
+      return (!!state.selected && state.selected.command?.length > 0) || false;
     },
-    selectedQueryCommandFomCommands: (state) =>
-      state.selected.commands
+    selectedQueryCommandFomCommands: (state: IQueriesStoreState) =>
+      state.selected?.commands
         .filter((c) => !!c.key)
         .map((c) => `${c.key} ${c.params}`)
         .join(' '),

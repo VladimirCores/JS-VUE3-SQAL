@@ -1,7 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useQueriesStore } from '@/store/queries.js';
-import { useSourcesStore } from '@/store/sources.js';
+import { useQueriesStore } from '@/store/queries';
+import { useSourcesStore } from '@/store/sources';
 
 const queriesStore = useQueriesStore();
 const sourcesStore = useSourcesStore();

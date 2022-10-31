@@ -1,7 +1,7 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import sql from '@/assets/json/sql.json';
-import { useQueriesStore } from '@/store/queries.js';
+import { useQueriesStore } from '@/store/queries.ts';
 
 const queriesStore = useQueriesStore();
 const { selected: query, isQueryWithCommands, isQuerySelected } = storeToRefs(queriesStore);

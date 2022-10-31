@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import LeftMenu from '@/components/MainMenu.vue';
@@ -8,8 +8,7 @@ import QueryCommandPanel from '@/components/panels/QueryCommandPanel.vue';
 import QueryVisualEditorPanel from '@/components/panels/QueryVisualEditorPanel.vue';
 import QueryResultsPanel from '@/components/panels/QueryResultsPanel.vue';
 import EditorModeButton from '@/components/buttons/EditorModeButton.vue';
-
-import { useSourcesStore } from '@/store/sources.js';
+import { useSourcesStore } from '@/store/sources';
 
 const sourcesStore = useSourcesStore();
 const { isAttributesPanelOpened } = storeToRefs(sourcesStore);

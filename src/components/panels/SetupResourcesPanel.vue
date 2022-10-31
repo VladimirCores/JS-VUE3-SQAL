@@ -1,8 +1,8 @@
-<script setup>
-import { ref } from 'vue';
+<script setup lang="ts">
+import { Ref, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useQueriesStore } from '@/store/queries.js';
-import { useSourcesStore } from '@/store/sources.js';
+import { useQueriesStore } from '@/store/queries';
+import { useSourcesStore } from '@/store/sources';
 
 const queriesStore = useQueriesStore();
 const sourcesStore = useSourcesStore();
@@ -10,7 +10,7 @@ const sourcesStore = useSourcesStore();
 const { selected: query } = storeToRefs(queriesStore);
 const { list: sources, isLoadingSource, isAttributesPanelOpened } = storeToRefs(sourcesStore);
 
-const domInputSelectedName = ref(null);
+const domInputSelectedName: Ref = ref(null);
 
 const onUpdateSelectedQueryName = () => {
   console.log('> SetupResourcesPanel -> updateSelectedQueryName', domInputSelectedName.value);

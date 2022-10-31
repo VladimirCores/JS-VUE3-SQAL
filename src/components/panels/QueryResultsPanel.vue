@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useQueriesStore } from '@/store/queries.js';
+import { useQueriesStore } from '@/store/queries';
 
 const queryStore = useQueriesStore();
 const { selected, isLoadingResults } = storeToRefs(queryStore);

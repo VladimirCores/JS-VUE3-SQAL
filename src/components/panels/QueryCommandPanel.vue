@@ -1,6 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { useQueriesStore } from '@/store/queries.js';
+import { useQueriesStore } from '@/store/queries';
 
 const queriesStore = useQueriesStore();
 const { selected: query, lastExecutedQuery, isQueryNotSelected, canExecuteQuery } = storeToRefs(queriesStore);
@@ -11,7 +11,7 @@ const onUpdateSelectedQueryCommand = (e) => {
   queriesStore.updateSelectedCommand(value);
 };
 const onExecuteQuery = async () => {
-  console.log('> QueryCommandPanel -> onExecuteQuery:', { command: query.value.command });
+  console.log('> QueryCommandPanel -> onExecuteQuery:', { command: query?.value?.command });
   await queriesStore.executeCurrentQueryCommand();
 };
 const onCleanQuery = () => {

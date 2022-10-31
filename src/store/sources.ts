@@ -1,17 +1,24 @@
 import { defineStore } from 'pinia';
-import { SourceVO } from '@/model/vos';
+import { ISourceVO, SourceVO } from '@/model/vos';
 import LocalStorageKeys from '@/constants/local';
 import {
   utilDelay,
   utilFindSelectableAndPassToSetter,
   utilFindSelectableByIdInListAndMarkIt,
-} from '@/utils/generalUtils.js';
+} from '@/utils/generalUtils';
 
 const SOURCE_URL = import.meta.env.VITE_SOURCES_URL;
 console.log('> useSourcesStore -> setup: SOURCES_URL =', SOURCE_URL);
 
+interface ISourcesStoreState {
+  list: ISourceVO[];
+  selected?: ISourceVO | null | undefined;
+  isLoadingSource: boolean;
+  isAttributesPanelOpened: boolean;
+}
+
 export const useSourcesStore = defineStore('sources', {
-  state: () => ({
+  state: (): ISourcesStoreState => ({
     list: [
       new SourceVO('categories', 'Categories'),
       new SourceVO('customers', 'Customers'),
@@ -36,10 +43,11 @@ export const useSourcesStore = defineStore('sources', {
       if (!id && !(this.selected = null)) return;
       if (this.selected) this.selected.isSelected = false;
       this.selected = utilFindSelectableByIdInListAndMarkIt(this.list, id);
-      if (!this.selected.data?.length) {
+      const selected = this.selected;
+      if (!!selected && selected.data?.length) {
         this.isLoadingSource = true;
-        this.selected.data = await utilDelay(1000).then(() =>
-          fetch(`${SOURCE_URL}${this.selected.id}.csv`, {
+        selected.data = await utilDelay(1000).then(() =>
+          fetch(`${SOURCE_URL}${this.selected?.id}.csv`, {
             mode: import.meta.env.DEV ? 'no-cors' : 'cors',
           })
             .then((r) => (r.ok ? r.text() : Promise.reject(r.status)))
@@ -49,7 +57,8 @@ export const useSourcesStore = defineStore('sources', {
               return [];
             }),
         );
-        console.log('> \t data:', this.selected.data);
+
+        console.log('> \t selected.data:', this.selected?.data);
         this.isLoadingSource = false;
       }
     },
