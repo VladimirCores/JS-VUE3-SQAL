@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia';
-import minifaker from 'minifaker';
-import 'minifaker/locales/en';
 
 import { IQueryVO, QueryCommandVO, QueryVO, ResultRowVO, ResultsVO } from '@/model/vos';
 import LocalStorageKeys from '@/constants/local';
@@ -10,6 +8,7 @@ import {
   utilFindSelectableByIdInListAndMarkIt,
 } from '@/utils/generalUtils';
 import { utilMathRandomRange } from '@/utils/mathUtils';
+import { utilRandomText } from '@/utils/textUtils';
 
 interface IQueriesStoreState {
   list: IQueryVO[];
@@ -46,13 +45,12 @@ export const useQueriesStore = defineStore('queries', {
           return Math.random() > 0.5 ? '' : 10;
         });
         return new ResultsVO(
-          columns.map(() => minifaker.word()),
+          columns.map(() => utilRandomText(8, 3)),
           [...Array(utilMathRandomRange(20, 5))].map((v, index) => {
             return new ResultRowVO(
               index,
               columns.map((data) => {
-                if (typeof data === 'string')
-                  return minifaker.array(utilMathRandomRange(10, 1), () => minifaker.word()).join(' ');
+                if (typeof data === 'string') return utilRandomText(10, 3, utilMathRandomRange(10, 1));
                 if (typeof data === 'number') return utilMathRandomRange(1000000, 10);
                 return null;
               }),
