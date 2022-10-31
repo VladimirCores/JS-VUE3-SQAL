@@ -68,18 +68,18 @@ export class QueryCommandVO extends Selectable implements IQueryCommandVO {
 export class SourceVO extends Selectable implements ISourceVO {
   static fromString(text) {
     const raw = JSON.parse(text);
-    return new SourceVO(raw.id, raw.name);
+    return new SourceVO(raw.id, raw.name, raw.data);
   }
 
   id: string;
   name: string;
   data: string[];
 
-  constructor(id, name) {
+  constructor(id, name, data = []) {
     super(false);
     this.id = id;
     this.name = name;
-    this.data = [];
+    this.data = data;
   }
 }
 

@@ -43,10 +43,9 @@ export const useSourcesStore = defineStore('sources', {
       if (!id && !(this.selected = null)) return;
       if (this.selected) this.selected.isSelected = false;
       this.selected = utilFindSelectableByIdInListAndMarkIt(this.list, id);
-      const selected = this.selected;
-      if (!!selected && selected.data?.length) {
+      if (this.selected != undefined && this.selected.data?.length == 0) {
         this.isLoadingSource = true;
-        selected.data = await utilDelay(1000).then(() =>
+        this.selected.data = await utilDelay(1000).then(() =>
           fetch(`${SOURCE_URL}${this.selected?.id}.csv`, {
             mode: import.meta.env.DEV ? 'no-cors' : 'cors',
           })
