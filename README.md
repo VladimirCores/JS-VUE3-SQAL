@@ -2,7 +2,7 @@
 
 You can try it here: [https://js-vue3-sqal.vercel.app/](https://js-vue3-sqal.vercel.app/)
 
-![Preview gif](preview.gif)
+![Preview jpeg](preview.jpg)
 
 This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
