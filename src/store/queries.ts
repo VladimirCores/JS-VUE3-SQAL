@@ -40,26 +40,31 @@ export const useQueriesStore = defineStore('queries', {
     async executeCurrentQueryCommand() {
       console.log('> useQueriesStore -> executeCurrentQueryCommand:', { command: this.selected?.command });
       this.isLoadingResults = true;
-      const resultsVO = await utilDelay(1000).then(() => {
-        const columns = [...Array(utilMathRandomRange(10, 3))].map(() => {
-          return Math.random() > 0.5 ? '' : 10;
+      const currentQuery = this.selected;
+      await utilDelay(5000)
+        .then(() => {
+          const columns = [...Array(utilMathRandomRange(10, 3))].map(() => {
+            return Math.random() > 0.5 ? '' : 10;
+          });
+          return new ResultsVO(
+            columns.map(() => utilRandomText(8, 3)),
+            [...Array(utilMathRandomRange(20, 5))].map((v, index) => {
+              return new ResultRowVO(
+                index,
+                columns.map((data) => {
+                  if (typeof data === 'string') return utilRandomText(10, 3, utilMathRandomRange(10, 1));
+                  if (typeof data === 'number') return utilMathRandomRange(1000000, 10);
+                  return null;
+                }),
+              );
+            }),
+          );
+        })
+        .then((resultsVO) => {
+          console.log('> \t currentQuery:', currentQuery);
+          currentQuery!.results = resultsVO;
         });
-        return new ResultsVO(
-          columns.map(() => utilRandomText(8, 3)),
-          [...Array(utilMathRandomRange(20, 5))].map((v, index) => {
-            return new ResultRowVO(
-              index,
-              columns.map((data) => {
-                if (typeof data === 'string') return utilRandomText(10, 3, utilMathRandomRange(10, 1));
-                if (typeof data === 'number') return utilMathRandomRange(1000000, 10);
-                return null;
-              }),
-            );
-          }),
-        );
-      });
-      console.log('> \t resultsVO:', resultsVO);
-      await this.updateSelectedResults(resultsVO);
+      // await this.updateSelectedResults(resultsVO);
       this.lastExecutedQuery = this.selected?.command || '';
       this.isLoadingResults = false;
     },
