@@ -18,6 +18,7 @@ export interface IQueryVO extends ISelectable {
   command: string;
   commands: any[];
   results?: ResultsVO | null;
+  isLoading: boolean;
 }
 
 export interface IResultRowVO extends ISelectable {
@@ -41,6 +42,7 @@ export class QueryVO extends Selectable implements IQueryVO {
   command: string;
   commands: any[];
   results?: ResultsVO | null;
+  isLoading: boolean;
 
   constructor(id, name, command = '', commands = [], results = null) {
     super(false);
@@ -49,6 +51,7 @@ export class QueryVO extends Selectable implements IQueryVO {
     this.command = command;
     this.commands = commands;
     this.results = results;
+    this.isLoading = false;
   }
 }
 

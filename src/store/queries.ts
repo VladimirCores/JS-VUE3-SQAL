@@ -41,6 +41,8 @@ export const useQueriesStore = defineStore('queries', {
       console.log('> useQueriesStore -> executeCurrentQueryCommand:', { command: this.selected?.command });
       this.isLoadingResults = true;
       const currentQuery = this.selected;
+      if (!currentQuery) return;
+      currentQuery!.isLoading = true;
       await utilDelay(5000)
         .then(() => {
           const columns = [...Array(utilMathRandomRange(10, 3))].map(() => {
@@ -63,6 +65,7 @@ export const useQueriesStore = defineStore('queries', {
         .then((resultsVO) => {
           console.log('> \t currentQuery:', currentQuery);
           currentQuery!.results = resultsVO;
+          currentQuery!.isLoading = false;
         });
       // await this.updateSelectedResults(resultsVO);
       this.lastExecutedQuery = this.selected?.command || '';

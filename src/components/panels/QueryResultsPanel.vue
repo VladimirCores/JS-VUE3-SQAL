@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useQueriesStore } from '@/store/queries';
 
 const queryStore = useQueriesStore();
-const { selected, isLoadingResults } = storeToRefs(queryStore);
+const { selected } = storeToRefs(queryStore);
 </script>
 <template>
   <div class="flex flex-col space-y-3 pb-2">
@@ -12,7 +12,7 @@ const { selected, isLoadingResults } = storeToRefs(queryStore);
       <flex-col class="border-t-1 mt-1.5 border-gray-400 w-full"></flex-col>
     </div>
     <div class="flex-row pb-3">
-      <div v-if="isLoadingResults">Loading ...</div>
+      <div v-if="selected?.isLoading">Loading ...</div>
       <table-fixed
         v-else-if="selected?.results"
         class="table border-collapse w-full mb-6"
